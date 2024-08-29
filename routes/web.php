@@ -6,3 +6,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('customwelcome');
 });
+
+// testing /test route with just return string
+Route::get('/test', function () {
+    return "if you see this page then the /test route is successful.";
+});
