@@ -1,34 +1,41 @@
 <?php
 
-use Illuminate\Http\Request;
+// these are like import in javascript
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 // this root route targeting resources/views dir
-Route::get('/', function () {
-    return view('customwelcome');
-});
+// Route::get('/', function () {
+//     return view('customwelcome');
+// });
 
-// capture POST form request from root page
-Route::post('/', function (Request $request) {
-    // todo: validate the incoming request
-    // then create a new post
-    dd($request->all());
-});
+// using route view instead of above code, works the same
+Route::view('/', 'customwelcome');
 
-// capture PUT method request from root page, with id as parameter
-Route::put('/{id}', function (Request $request, $id) {
-    // dd($request->all());
-    // return "PUT request successful";
-    return $id;
-});
+// get all Posts resources capabilities as one route (more cleaner)
+Route::resource('/posts', PostController::class);
 
-// testing /test GET route with just return string
-Route::get('/test', function () {
-    $test = "if you see this page then the /test route is successful.";
-    return "<h1>". $test ."</h1>";
-});
+// // add GET route to /posts with PostController class with index method
+// // this is for tabulating all posts
+// // Add route name to the route
+// Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
-// using delete route by id parameter
-Route::delete('/{id}', function ($id) {
-    return $id;
-});
+// // add creation of new post
+// Route::get('/posts/create', [PostController::class, 'create']);
+
+// // add POST route to /posts with PostController class with store method
+// // instead of using anonymous function
+// // this is for storing new post
+// Route::post('/posts', [PostController::class, 'store']);
+
+// // show a single post
+// Route::get('/posts/{id}', [PostController::class, 'show']);
+
+// // edit a single post
+// Route::get('/posts/{id}/edit', [PostController::class, 'edit']);
+
+// // add PUT route to modify /posts/{id} page with PostController class with update method
+// Route::put('/posts/{id}', [PostController::class, 'update']);
+
+// // delete a single post
+// Route::delete('/posts/{id}', [PostController::class, 'destroy']);
