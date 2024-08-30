@@ -7,5 +7,13 @@
 </head>
 <body>
     <h1>Hello World!</h1>
+
+    <!-- adding a form -->
+    <form action="/" method="post">
+        <!-- Cross Site Request Forgery -->
+        @csrf
+        <input type="text" name="username" id="">
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
