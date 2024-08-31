@@ -12,5 +12,8 @@ export default defineConfig({
         hmr: {
             host: 'localhost',
         },
+        watch: {
+            usePolling: true, // HMR needs polling to work (resorce intensive)
+        },
     },
 });
