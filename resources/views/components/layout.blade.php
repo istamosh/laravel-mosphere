@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +10,15 @@
     {{-- for HMR --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/posts">Posts</a>
-        <a href="/posts/create">Create New Post</a>
-    </nav>
 
-    <!-- render all x-content inside this slot -->
-    {{ $slot }}
+<body>
+    {{-- render navbar from navbar.blade.php --}}
+    <x-navbar />
+
+    {{-- render all x-content inside this slot --}}
+    <div class="mt-3 ml-5">
+        {{ $slot }}
+    </div>
 </body>
+
 </html>
