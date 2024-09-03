@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Layout | Mosphere</title>
+    <title>Mosphere</title>
 
     {{-- for HMR --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <!-- render x-content inside this slot -->
+    <nav>
+        <a href="/">Home</a>
+        <a href="/posts">Posts</a>
+        <a href="/posts/create">Create New Post</a>
+    </nav>
+
+    <!-- render all x-content inside this slot -->
     {{ $slot }}
 </body>
 </html>
