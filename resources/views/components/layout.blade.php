@@ -11,12 +11,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-slate-100 dark:bg-slate-800">
     {{-- render navbar from navbar.blade.php --}}
     <x-navbar />
 
     {{-- render all x-content inside this slot --}}
-    <div class="mt-3 ml-5">
+    <div class="mt-3 ml-5 text-gray-900 dark:text-white">
         {{ $slot }}
     </div>
 </body>

@@ -1,5 +1,5 @@
 <x-layout>
-    <h1>Do you have something to post?</h1>
+    <h1 class="text-gray-900 dark:text-white">Do you have something to post?</h1>
 
     <div class="max-w-2xl mx-auto p-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
         <form action="">
@@ -26,5 +26,5 @@
     </div>
 
     {{-- showing the current date --}}
-    <p>Today's Date: {{ date('Y-m-d') }}</p>
+    <p class="text-gray-900 dark:text-white">Today's Date: {{ date('Y-m-d') }}</p>
 </x-layout>
