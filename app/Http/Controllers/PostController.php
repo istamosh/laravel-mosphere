@@ -35,7 +35,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // process POST request to /posts
+        // catching the request params of title and content from csrf just like Tinker query
+        Post::create([
+            'title' => $request->title,
+            'content' => $request->content
+        ]);
+
+        // redirect back to /posts
+        return redirect()->route('posts.index');
     }
 
     /**
