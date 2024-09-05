@@ -1,5 +1,5 @@
 <x-layout>
-    <h1>Edit a Post</h1>
+    <x-header>Edit a Post</x-header>
 
     {{-- showing the current date --}}
     <p>Today's Date: {{ date('Y-m-d') }}</p>

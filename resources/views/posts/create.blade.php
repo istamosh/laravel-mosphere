@@ -1,5 +1,5 @@
 <x-layout>
-    <h1 class="text-gray-900 dark:text-white">Do you have something to post?</h1>
+    <x-header>Do you have something to share?</x-header>
 
     <div class="max-w-2xl mx-auto p-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
         <form action="">

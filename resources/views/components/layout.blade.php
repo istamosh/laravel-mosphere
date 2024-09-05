@@ -16,7 +16,7 @@
     <x-navbar />
 
     {{-- render all x-content inside this slot --}}
-    <div class="mt-3 ml-5 text-gray-900 dark:text-white">
+    <div class="mt-3 mx-4 text-gray-900 dark:text-white">
         {{ $slot }}
     </div>
 </body>
