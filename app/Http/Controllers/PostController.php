@@ -13,13 +13,11 @@ class PostController extends Controller
     public function index()
     {
         // get all posts from database
-        $name = 'Istamosh';
-        $age = 25;
-        $posts = ['Post 1', 'Post 2', 'Post 3', 'Post Mortem'];
+        $posts = Post::all();
 
         // create view for posts, accessed from views/posts/index.blade.php, hence it's using directoryname.filename
         // passing data array to the view
-        return view('posts.index', ['username' => $name, 'age' => $age, 'posts' => $posts]);
+        return view('posts.index', ['posts' => $posts]);
     }
 
     /**
@@ -37,8 +35,8 @@ class PostController extends Controller
     {
         // validate request first
         $validated = $request->validate([
-            'title' => ['required', 'max:255'],
-            'content' => ['required']
+            'title' => ['required', 'min:5', 'max:255'],
+            'content' => ['required', 'min:10']
         ]);
 
         // process POST request to /posts
