@@ -1,6 +1,11 @@
 <x-layout>
     <x-header>Post Page</x-header>
 
+    {{-- displaying info message --}}
+    @if (session('info'))
+        <x-postdeleted>{{ session('info') }}</x-postdeleted>
+    @endif
+
     <div class="flex justify-end">
         <a href="{{ route('posts.create') }}">
             <x-button>Add Post</x-button>
