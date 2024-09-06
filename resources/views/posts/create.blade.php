@@ -2,6 +2,12 @@
     <x-header>Do you have something to share?</x-header>
 
     <div class="max-w-2xl mx-auto p-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
+
+        {{-- displaying errors from PostController --}}
+        @foreach ($errors->all() as $error)
+            <p class="text-red-500">{{ $error }}</p>
+        @endforeach
+
         <form method="POST" action="/posts">
             {{-- using csrf directive for debug --}}
             @csrf
