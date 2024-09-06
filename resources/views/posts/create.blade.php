@@ -2,7 +2,7 @@
     <x-header>Do you have something to share?</x-header>
 
     <div class="max-w-2xl mx-auto p-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
-        <form method="POST" action="/posts">
+        <form method="POST" action="{{ route('posts.store') }}">
             {{-- using csrf directive for debug --}}
             @csrf
             <div class="mb-6">

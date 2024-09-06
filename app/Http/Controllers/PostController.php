@@ -51,18 +51,25 @@ class PostController extends Controller
      * Display the specified resource.
      * Already injected with Post model as parameter
      */
-    public function show()
+
+    // handling route GET /posts/{id}
+    public function show(Post $post)
     {
-        // pass in post object to view
-        return view('posts.show');
+        // using Post $post will be working under the hood
+
+        // if found display post, if not found display 404
+        // $post = Post::findOrFail($id);
+
+        // return view with found post
+        return view('posts.show', ['post' => $post]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Post $post)
     {
-        return view('posts.edit');
+        return view('posts.edit', ['post' => $post]);
     }
 
     /**
@@ -70,7 +77,17 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        // validate the revision first
+        $validated = $request->validate([
+            'title' => ['required', 'min:5', 'max:255'],
+            'content' => ['required', 'min:10']
+        ]);
+
+        // update the post in database
+        $post->update($validated);
+
+        // redirect back to /posts
+        return to_route('posts.index');
     }
 
     /**

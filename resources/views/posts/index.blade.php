@@ -2,13 +2,13 @@
     <x-header>Post Page</x-header>
 
     <div class="flex justify-end">
-        <a href="/posts/create">
+        <a href="{{ route('posts.create') }}">
             <x-button>Add Post</x-button>
         </a>
     </div>
 
     {{-- displaying posts using foreach --}}
-    <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         @foreach ($posts as $post)
             <div
                 class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -18,7 +18,7 @@
                 </a>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ Str::limit($post->content, 75, '...') }}
                 </p>
-                <a href="#"
+                <a href="/posts/{{ $post->id }}"
                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Read more
                     <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@
                 </a>
             </div>
         @endforeach
-    </ul>
+    </div>
 
     {{-- showing the current date --}}
     <p class="mt-4 text-xs text-blue-500">Today's Date: {{ date('Y-m-d') }}</p>
