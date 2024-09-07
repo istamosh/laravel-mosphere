@@ -8,11 +8,14 @@
 
     <x-header>Post Page</x-header>
 
-    <div class="flex justify-end">
-        <a href="{{ route('posts.create') }}">
-            <x-button>Add Post</x-button>
-        </a>
-    </div>
+    {{-- only authenticated users can add posts, delete auth users through cookies --}}
+    @auth
+        <div class="flex justify-end">
+            <a href="{{ route('posts.create') }}">
+                <x-button>Add Post</x-button>
+            </a>
+        </div>
+    @endauth
 
     {{-- displaying posts using foreach --}}
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
