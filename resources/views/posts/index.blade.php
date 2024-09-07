@@ -1,10 +1,10 @@
 <x-layout>
-    <x-header>Post Page</x-header>
-
     {{-- displaying info message --}}
     @if (session('info'))
         <x-postdeleted>{{ session('info') }}</x-postdeleted>
     @endif
+
+    <x-header>Post Page</x-header>
 
     <div class="flex justify-end">
         <a href="{{ route('posts.create') }}">
@@ -17,10 +17,7 @@
         @foreach ($posts as $post)
             <div
                 class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $post->title }}
-                    </h5>
-                </a>
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $post->title }}</h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ Str::limit($post->content, 75, '...') }}
                 </p>
                 <a href="/posts/{{ $post->id }}"

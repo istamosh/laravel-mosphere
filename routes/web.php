@@ -1,7 +1,11 @@
 <?php
 
 // these are like import in javascript
+
+use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisterUserController;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Route;
 
 // this root route targeting resources/views dir
@@ -39,3 +43,10 @@ Route::resource('/posts', PostController::class);
 
 // // delete a single post
 // Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+
+// add routes for registration and login
+Route::get('/register', [RegisterUserController::class, 'register'])->name('register');
+Route::post('/register', [RegisterUserController::class, 'store'])->name('register.store');
+
+Route::get('/login', [LoginUserController::class, 'login'])->name('login');
+Route::post('/login', [LoginUserController::class, 'store'])->name('login.store');
