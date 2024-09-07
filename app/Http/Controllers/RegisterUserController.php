@@ -36,6 +36,6 @@ class RegisterUserController extends Controller
         Auth::login($user);
 
         // redirect to home
-        return to_route('posts.index')->with('success', 'Registration successful! Now you can log in.');
+        return to_route('posts.index')->with('success', 'Registration successful!.');
     }
 }

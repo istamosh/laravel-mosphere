@@ -23,6 +23,22 @@
                 {{-- request()->is() to check if the current route is the same, return true --}}
                 <x-navbar-link href="/" :active="request()->is('/')">Home</x-navbar-link>
                 <x-navbar-link href="/posts" :active="request()->is('posts')">Posts</x-navbar-link>
+
+                {{-- this link is only shown if the user is not logged in --}}
+                @guest
+                    <x-navbar-link href="{{ route('login') }}" :active="request()->is('login')">Login</x-navbar-link>
+                    <x-navbar-link href="{{ route('register') }}" :active="request()->is('register')">Register</x-navbar-link>
+                @endguest
+
+                {{-- this link is only shown if the user already logged in --}}
+                @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        {{-- adding submit function technique just like a submit button for a form --}}
+                        <x-navbar-link href="{{ route('logout') }}" :active="false"
+                            onclick="event.preventDefault(); this.closest('form').submit();">Logout</x-navbar-link>
+                    </form>
+                @endauth
             </ul>
         </div>
     </div>

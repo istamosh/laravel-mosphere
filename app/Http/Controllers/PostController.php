@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -25,6 +26,11 @@ class PostController extends Controller
      */
     public function create()
     {
+        // protects direct access to /posts/create from unauthorized users
+        if (!Auth::check()) {
+            return view('auth.login');
+        }
+
         return view('posts.create');
     }
 
