@@ -17,9 +17,10 @@ class RegisterUserController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         // validate request first
         $request->validate([
-            'name' => ['required'],
+            'name' => ['required', 'min:5'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8', 'confirmed', Password::defaults()],
         ]);
@@ -35,6 +36,6 @@ class RegisterUserController extends Controller
         Auth::login($user);
 
         // redirect to home
-        return to_route('posts.index');
+        return to_route('posts.index')->with('success', 'Registration successful! Now you can log in.');
     }
 }

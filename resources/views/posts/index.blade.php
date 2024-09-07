@@ -2,6 +2,8 @@
     {{-- displaying info message --}}
     @if (session('info'))
         <x-postdeleted>{{ session('info') }}</x-postdeleted>
+    @elseif (session('success'))
+        <x-usercreated>{{ session('success') }}</x-usercreated>
     @endif
 
     <x-header>Post Page</x-header>
