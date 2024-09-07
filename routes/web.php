@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 });
 // and these routes are excepted from the auth middleware
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{post}', [PostController::class, 'show'])->middleware('can-view-post')->name('posts.show');
 
 // add routes for registration and login
 // prevent authenticated user from registering and login again, by using guest middleware group
