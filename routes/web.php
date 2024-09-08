@@ -8,20 +8,30 @@ use Illuminate\Support\Facades\Route;
 // using route view instead of above code, works the same
 Route::view('/', 'customwelcome');
 
-// explicitly define the auth middleware
+// middleware for all routes of authenticated users
 Route::middleware('auth')->group(function () {
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+
+    // only original poster can edit posts
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->can('update', 'post')->name('posts.edit');
+    
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     // add route for logout, logout will not show any page
     Route::post('/logout', [LoginUserController::class, 'logout'])->name('logout');
+
+    // add /admin route for admin-only page with can:is-admin middleware
+    Route::get('/admin', function () {
+        return 'You are logged in as admin';
+    })->can('is-admin')->name('admin');
 });
 // and these routes are excepted from the auth middleware
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/posts/{post}', [PostController::class, 'show'])->middleware('can-view-post')->name('posts.show');
+
+// ->middleware('can-view-post') is not used for now so guest can view posts
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 // add routes for registration and login
 // prevent authenticated user from registering and login again, by using guest middleware group

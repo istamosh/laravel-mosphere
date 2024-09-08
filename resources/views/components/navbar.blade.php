@@ -32,6 +32,11 @@
 
                 {{-- this link is only shown if the user already logged in --}}
                 @auth
+
+                    {{-- display authenticated user's name --}}
+                    <span
+                        class="text-gray-900 dark:text-white underline decoration-blue-500">{{ Auth::user()->name }}</span>
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         {{-- adding submit function technique just like a submit button for a form --}}

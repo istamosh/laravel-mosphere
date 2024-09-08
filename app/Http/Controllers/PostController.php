@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -74,6 +75,15 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        // check if the post's user id is not matched with authenticated user id
+        // if ($post->user_id !== Auth::user()->id) {
+        //     abort(403);
+        // }
+
+        // Only authorized users can edit posts (logged user = post user_id)
+        // Commented because being handled by the route middleware (update: added gate for maximizing security)
+        Gate::authorize('update', $post);
+
         return view('posts.edit', ['post' => $post]);
     }
 
@@ -100,6 +110,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // Only authorized users can delete posts (logged user = post user_id)
+        Gate::authorize('delete', $post);
+
         // get the post title before deleting
         $title = $post->title;
 
