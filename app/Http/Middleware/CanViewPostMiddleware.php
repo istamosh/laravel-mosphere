@@ -21,7 +21,7 @@ class CanViewPostMiddleware
         // dd($request->user());
 
         // only authenticated users can view posts
-        if (Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 

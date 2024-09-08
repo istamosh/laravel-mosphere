@@ -45,9 +45,8 @@ class PostController extends Controller
             'content' => ['required', 'min:10']
         ]);
 
-        // process POST request to /posts
-        // catching the request params of title and content from csrf just like Tinker query
-        Post::create($validated);
+        // authenticated user will create a new post (why is it showing red error?)
+        Auth::user()->posts()->create($validated);
 
         // redirect back to /posts
         return to_route('posts.index');
@@ -92,8 +91,8 @@ class PostController extends Controller
         // update the post in database
         $post->update($validated);
 
-        // redirect back to /posts
-        return to_route('posts.index');
+        // redirect back to show post
+        return to_route('posts.show', ['post' => $post]);
     }
 
     /**
