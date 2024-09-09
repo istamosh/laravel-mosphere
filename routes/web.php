@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterUserController;
@@ -22,10 +23,8 @@ Route::middleware('auth')->group(function () {
     // add route for logout, logout will not show any page
     Route::post('/logout', [LoginUserController::class, 'logout'])->name('logout');
 
-    // add /admin route for admin-only page with can:is-admin middleware
-    Route::get('/admin', function () {
-        return 'You are logged in as admin';
-    })->can('is-admin')->name('admin');
+    // add /admin route for admin-only page with middleware check as security layer
+    Route::get('/admin', [AdminController::class, 'index'])->middleware('is-admin')->name('admin');
 });
 // and these routes are excepted from the auth middleware
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
