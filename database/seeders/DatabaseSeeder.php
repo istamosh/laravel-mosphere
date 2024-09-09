@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
         // create admin upon seeding
         User::factory()->create([
-            'name' => 'Admin User',
+            'name' => 'Admin',
             'email' => 'admin@test',
             'password' => Hash::make('password'),
             'is_admin' => true

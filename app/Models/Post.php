@@ -15,7 +15,8 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
-        'user_id'
+        'user_id',
+        'thumbnail',
     ];
 
     // define relationship with user, will be accessed through $post->user

@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
 
+            // provide thumbnail field and it's optional
+            $table->string('thumbnail')->nullable();
+
             $table->timestamps();
         });
     }

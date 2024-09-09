@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
@@ -43,8 +44,17 @@ class PostController extends Controller
         // validate request first
         $validated = $request->validate([
             'title' => ['required', 'min:5', 'max:255'],
-            'content' => ['required', 'min:10']
+            'content' => ['required', 'min:10'],
+            // make the thumbnail not required (can empty), but it should be image
+            'thumbnail' => ['nullable', 'image'],
         ]);
+
+        // store the thumbnail file, check the filesystems.php
+        // if the request has a thumbnail included
+        if ($request->hasFile('thumbnail')) {
+            // place the new thumbnail in storage
+            $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails');
+        }
 
         // authenticated user will create a new post (why is it showing red error?)
         Auth::user()->posts()->create($validated);
@@ -92,16 +102,33 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        // add Gate
+        Gate::authorize('update', $post);
+
         // validate the revision first
         $validated = $request->validate([
             'title' => ['required', 'min:5', 'max:255'],
-            'content' => ['required', 'min:10']
+            'content' => ['required', 'min:10'],
+            'thumbnail' => ['sometimes', 'image']
         ]);
+
+        // if update request has a thumbnail included
+        if ($request->hasFile('thumbnail')) {
+            // if the post entry has a thumbnail and the file exists in storage, delete the old one
+            if ($post->thumbnail && File::exists(storage_path('app/public/' . $post->thumbnail))) {
+                File::delete(storage_path('app/public/' . $post->thumbnail));
+            }
+
+            // place the new thumbnail in storage
+            $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails');
+        }
 
         // update the post in database, but retain the user_id so they can still edit the post even after the admin touched it
         $post->update([
             'title' => $validated['title'],
             'content' => $validated['content'],
+            // make the thumbnail stays if nothing is uploaded, even if it's null
+            'thumbnail' => $validated['thumbnail'] ?? $post->thumbnail,
             'user_id' => $post->user_id,
         ]);
 
@@ -120,6 +147,11 @@ class PostController extends Controller
         // get the post title before deleting
         $title = $post->title;
 
+        // also delete the image from the public storage
+        // check if db has a thumbnail entry and if the file exists in storage, delete it
+        if ($post->thumbnail && File::exists(storage_path('app/public/' . $post->thumbnail))) {
+            File::delete(storage_path('app/public/' . $post->thumbnail));
+        }
         // delete the post
         $post->delete();
 
