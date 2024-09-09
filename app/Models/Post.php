@@ -18,8 +18,8 @@ class Post extends Model
         'user_id'
     ];
 
-    // define relationship with user
-    public function user(): BelongsTo
+    // define relationship with user, will be accessed through $post->user
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

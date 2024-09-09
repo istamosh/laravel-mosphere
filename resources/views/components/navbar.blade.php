@@ -24,6 +24,11 @@
                 <x-navbar-link href="/" :active="request()->is('/')">Home</x-navbar-link>
                 <x-navbar-link href="/posts" :active="request()->is('posts')">Posts</x-navbar-link>
 
+                {{-- check if the logged user's is_admin = 1 --}}
+                @if (Auth::check() && Auth::user()->is_admin)
+                    <x-navbar-link href="/admin" :active="request()->is('admin')">Admin Page</x-navbar-link>
+                @endif
+
                 {{-- this link is only shown if the user is not logged in --}}
                 @guest
                     <x-navbar-link href="{{ route('login') }}" :active="request()->is('login')">Login</x-navbar-link>
