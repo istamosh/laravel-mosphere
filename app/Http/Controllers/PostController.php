@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PostMail;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -58,6 +60,13 @@ class PostController extends Controller
 
         // authenticated user will create a new post (why is it showing red error?)
         Auth::user()->posts()->create($validated);
+
+        // send mail to authenticated user's email after storing, will pass name and content to the PostMail constructor class
+        Mail::to(Auth::user()->email)->send(new PostMail([
+            'title' => $validated['title'],
+            'content' => $validated['content'], 
+            'name' => Auth::user()->name, 
+        ]));
 
         // redirect back to /posts
         return to_route('posts.index');
