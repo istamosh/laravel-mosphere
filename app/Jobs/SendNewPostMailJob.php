@@ -32,10 +32,10 @@ class SendNewPostMailJob implements ShouldQueue
         // send mail to authenticated user's email after storing, will pass name and content to the PostMail constructor class
         // this will store an entry to the jobs database if .env's QUEUE_CONNECTION is set to 'database'
         // set QUEUE_CONNECTION in .env to 'sync' for testing
-        Mail::to(Auth::user()->email)->send(new PostMail([
+        Mail::to($this->incoming['email'])->send(new PostMail([
             'title' => $this->incoming['title'],
             'content' => $this->incoming['content'], 
-            'name' => Auth::user()->name, 
+            'name' => $this->incoming['name'], 
         ]));
     }
 }

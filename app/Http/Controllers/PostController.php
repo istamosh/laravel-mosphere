@@ -63,8 +63,10 @@ class PostController extends Controller
 
         // dispatch a job to send email
         dispatch(new SendNewPostMailJob([
+            'email' => Auth::user()->email,
             'title' => $validated['title'], 
-            'content' => $validated['content']]));
+            'content' => $validated['content'],
+            'name' => Auth::user()->name]));
 
         // redirect back to /posts
         return to_route('posts.index');
