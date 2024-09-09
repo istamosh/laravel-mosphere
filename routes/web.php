@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterUserController;
@@ -23,8 +24,13 @@ Route::middleware('auth')->group(function () {
     // add route for logout, logout will not show any page
     Route::post('/logout', [LoginUserController::class, 'logout'])->name('logout');
 
-    // add /admin route for admin-only page with middleware check as security layer
-    Route::get('/admin', [AdminController::class, 'index'])->middleware('is-admin')->name('admin');
+    // add gate middleware is-admin from AppServiceProvider as group
+    Route::middleware('is-admin')->group(function () {
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+        Route::get('/admin/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
+        Route::put('/admin/posts/{post}', [AdminPostController::class, 'update'])->name('admin.posts.update');
+        Route::delete('/admin/posts/{post}', [AdminPostController::class, 'destroy'])->name('admin.posts.destroy');
+    });
 });
 // and these routes are excepted from the auth middleware
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');

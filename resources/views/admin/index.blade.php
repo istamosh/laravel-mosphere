@@ -1,21 +1,10 @@
 <x-layout>
     {{-- displaying info message --}}
     @if (session('info'))
-        <x-postdeleted>{{ session('info') }}</x-postdeleted>
-    @elseif (session('success'))
-        <x-usercreated>{{ session('success') }}</x-usercreated>
+        <x-info>{{ session('info') }}</x-info>
     @endif
 
-    <x-header>Posts</x-header>
-
-    {{-- only authenticated users can add posts, delete auth users through cookies --}}
-    @auth
-        <div class="flex justify-end">
-            <a href="{{ route('posts.create') }}">
-                <x-button>Add Post</x-button>
-            </a>
-        </div>
-    @endauth
+    <x-header>Post Table</x-header>
 
     {{-- displaying posts using table --}}
     <div class="relative overflow-x-auto">
@@ -26,44 +15,49 @@
                         Post Title
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Content
+                        Created At
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Author
                     </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        Action
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($posts as $post)
-                    {{-- check if it's not the last post --}}
-                    @if (!$loop->last)
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $post->title }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ $post->content }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $post->user->name }}
-                            </td>
-                        </tr>
-                    @else
-                        <tr class="bg-white dark:bg-gray-800">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $post->title }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ $post->content }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $post->user->name }}
-                            </td>
-                        </tr>
-                    @endif
-                @endforeach
+                @forelse ($posts as $post)
+                    <tr class="{{ $loop->last ? '' : 'bg-white border-b' }} dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                            {{ Str::limit($post->title, 50, '...') }}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{ $post->created_at }} (modified {{ $post->updated_at->diffForHumans() }})
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $post->user->name }}
+                        </td>
+                        <td class="px-6 py-4 flex flex-wrap justify-center">
+                            {{-- add specialized routes for admin --}}
+                            <a href="{{ route('admin.posts.edit', $post->id) }}"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</a>
+
+                            <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit"
+                                    class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                            No post yet.
+                        </th>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
