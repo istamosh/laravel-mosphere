@@ -12,13 +12,13 @@ class PostPolicy
     // before the intended policy method is actually executed
     public function before(User $user, string $ability): bool|null
     {
-        if ($user->is_admin) {
+        // in this case the admin can bypass checks to delete posts
+        if ($user->is_admin && $ability === 'delete') {
             return true;
         }
 
-        return false;
+        return null;
     }
-
 
     /**
      * Determine whether the user can view any models.
@@ -49,7 +49,8 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        return $user->id === $post->user_id;
+        // allow both users and admins to edit posts
+        return $user->id === $post->user_id || $user->is_admin;
     }
 
     /**

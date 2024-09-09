@@ -98,8 +98,12 @@ class PostController extends Controller
             'content' => ['required', 'min:10']
         ]);
 
-        // update the post in database
-        $post->update($validated);
+        // update the post in database, but retain the user_id so they can still edit the post even after the admin touched it
+        $post->update([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'user_id' => $post->user_id,
+        ]);
 
         // redirect back to show post
         return to_route('posts.show', ['post' => $post]);
