@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\PostMail;
+use App\Jobs\SendNewPostMailJob;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,12 +61,10 @@ class PostController extends Controller
         // authenticated user will create a new post (why is it showing red error?)
         Auth::user()->posts()->create($validated);
 
-        // send mail to authenticated user's email after storing, will pass name and content to the PostMail constructor class
-        Mail::to(Auth::user()->email)->send(new PostMail([
-            'title' => $validated['title'],
-            'content' => $validated['content'], 
-            'name' => Auth::user()->name, 
-        ]));
+        // dispatch a job to send email
+        dispatch(new SendNewPostMailJob([
+            'title' => $validated['title'], 
+            'content' => $validated['content']]));
 
         // redirect back to /posts
         return to_route('posts.index');
