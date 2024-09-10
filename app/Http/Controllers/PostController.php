@@ -18,7 +18,8 @@ class PostController extends Controller
     public function index()
     {
         // get all posts from database
-        $posts = Post::all();
+        // but paginate them so it's not all at once
+        $posts = Post::paginate(4);
 
         // create view for posts, accessed from views/posts/index.blade.php, hence it's using directoryname.filename
         // passing data array to the view
@@ -62,11 +63,11 @@ class PostController extends Controller
         Auth::user()->posts()->create($validated);
 
         // dispatch a job to send email
-        dispatch(new SendNewPostMailJob([
-            'email' => Auth::user()->email,
-            'title' => $validated['title'], 
-            'content' => $validated['content'],
-            'name' => Auth::user()->name]));
+        // dispatch(new SendNewPostMailJob([
+        //     'email' => Auth::user()->email,
+        //     'title' => $validated['title'], 
+        //     'content' => $validated['content'],
+        //     'name' => Auth::user()->name]));
 
         // redirect back to /posts
         return to_route('posts.index');

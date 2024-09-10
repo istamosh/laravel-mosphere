@@ -4,6 +4,7 @@ export default {
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
     "./resources/**/*.vue",
+    "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php", // include styles for pagination
   ],
   theme: {
     extend: {},

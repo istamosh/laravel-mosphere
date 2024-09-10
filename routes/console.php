@@ -12,6 +12,6 @@ Artisan::command('inspire', function () {
 
 // create a schedule to run mail job to admin with PostCountMail every minute
 // run it with artisan schedule:work
-Schedule::call(function () {
-    Mail::to('admin@test')->send(new PostCountMail());
-})->everyMinute();
+// Schedule::call(function () {
+//     Mail::to('admin@test')->send(new PostCountMail());
+// })->everyMinute();

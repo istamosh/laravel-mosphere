@@ -38,6 +38,11 @@
         @endforeach
     </div>
 
+    {{-- displaying pagination links --}}
+    <div class="mt-4">
+        {{ $posts->links() }}
+    </div>
+
     {{-- showing the current date --}}
     <p class="mt-4 text-xs text-blue-500">Today's Date: {{ date('Y-m-d') }}</p>
 </x-layout>
